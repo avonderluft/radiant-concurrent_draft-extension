@@ -1,0 +1,5 @@
+%p.content
+  %label{:for=>"snippet_draft_content"} Body
+  ~ text_area "snippet", "draft_content", :class => "textarea", :style => "width: 100%"
+  = preserve do
+    = hidden_field "snippet", "content"

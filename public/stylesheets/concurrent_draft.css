@@ -1,0 +1,71 @@
+#draft-controls-container {
+  float: right;
+}
+
+#draft-controls {
+  position: relative;
+  border: 1px solid rgb(0, 92, 157);
+  background: white;
+  padding: 0px;
+  line-height: 20px;
+  width: 220px;
+  cursor: pointer;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+
+#draft-controls .status {
+  margin: 5px;
+  padding: 0 5px 0 20px;
+  background: url(/images/admin/page_edit.png) left center no-repeat;
+  font-size: 80%;
+}
+
+#draft-controls ul.dropdown {
+  position: absolute;
+  margin: -1px 0 0 -1px;
+  width: 210px;
+  top: 28px;
+  left: -1px;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: rgb(0, 92, 157);
+  display: none;
+  background-color: #eef;
+  padding: 5px;
+}
+
+#draft-controls > ul.dropdown {
+  top: auto;
+  left: auto;
+}
+
+#draft-controls.active ul.dropdown {
+  display: block;
+}
+
+#draft-controls ul.dropdown li {
+  margin-left: 10px;
+  list-style: none;
+  margin-bottom: 3px;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+#draft-controls ul.dropdown a {
+  color: black;
+  text-decoration: none;
+  outline: none;
+  padding-left: 20px;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+
+#draft-controls ul.dropdown a:hover {
+  text-decoration: underline;
+}
+
+#draft-controls .schedule_draft a { background-image: url(/images/admin/clock.png);}
+#draft-controls .publish a { background-image: url(/images/admin/tick.png);}
+#draft-controls .cancel a { background-image: url(/images/admin/cancel.png);}
+#draft-controls .revert a { background-image: url(/images/admin/page_refresh.png);}
