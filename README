@@ -5,15 +5,19 @@ Created by: Andrew vonderLuft and Sean Cribbs, August 2008, in Portland Oregon
 The ConcurrentDraft extension enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.
 Every page, snippet and layout hence can have a concurrent draft and production version.
 
+== Requirements
+
+If you running Radiant version 0.6.9 or earlier, you will need to use radiant edge.  To install edge for your Radiant project,
+run this from your Radiant root:
+$ rake radiant:freeze:edge
+
 == Installation
 
-From the root of your radiant app:
+With the Radiant Extensions registry:
 
-$ cd vendor/extensions                                          ## go to the radiant extensions directory
-$ git clone git://github.com/avonderluft/concurrent_draft.git   ## use http://github.com/... if you are behind a firewall that blocks SSH
-$ cd ../../                                                     ## go back to root of radiant app
-$ rake radiant:extensions:concurrent_draft:migrate              ## Run the migration to update the models
-$ rake radiant:extensions:concurrent_draft:update               ## Copies assets   
+From your Radiant root run:
+
+$ script/extension install concurrent_draft
 
 Restart your radiant app, and you should be good to go.
    
