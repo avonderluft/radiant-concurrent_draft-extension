@@ -20,6 +20,11 @@ From your Radiant root run:
 $ script/extension install concurrent_draft
 
 Restart your radiant app, and you should be good to go.
+
+== Caveats
+
+Scheduled times are dependent on the ActiveRecord time setting.  If you want to use local time, add this to your environment.rb
+config.active_record.default_timezone = :local
    
 == Acknowledgments
 
