@@ -4,7 +4,7 @@ require_dependency 'application'
 class ConcurrentDraftExtension < Radiant::Extension
   version "1.0"
   description "Enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production"
-  url "http://github.com/avonderluft/concurrent_draft/tree/master"
+  url "http://github.com/avonderluft/radiant-concurrent_draft-extension/tree/master"
 
   define_routes do |map|
     map.page_schedule_draft_promotion 'admin/pages/schedule_draft_promotion/:id', :controller => 'admin/page', :action => 'schedule_draft_promotion'
