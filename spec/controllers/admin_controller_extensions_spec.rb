@@ -5,7 +5,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
   before :each do
     controller.cache.clear
-    login_as :existing
+    login_as :admin
     @klass = controller.class.model_class
     @model_symbol = controller.send(:model_symbol)
     @object = mock_model(controller.class.model_class, :promote_draft! => nil)
@@ -49,19 +49,24 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
   describe "scheduling draft promotion" do
     def do_post
-      @post_attrs = {:draft_promotion_scheduled_at => 3.days.from_now}
       post :schedule_draft_promotion, :id => '1',
                                       @model_symbol => @post_attrs,
                                       :commit => @klass.schedule_promotion_text
     end
 
     before :each do
+      @post_attrs = {'draft_promotion_scheduled_at' => 3.days.from_now}
       @object.stub!(:update_attributes)
       @object.stub!(:draft_promotion_scheduled_at).and_return(3.days.from_now)
     end
 
     it "should not promote the draft" do
       @object.should_not_receive(:promote_draft!)
+      do_post
+    end
+
+    it "should not cancel the draft" do
+      @object.should_not_receive(:cancel_draft!)
       do_post
     end
 
