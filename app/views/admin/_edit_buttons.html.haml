@@ -1,0 +1,9 @@
+- if model.is_a?(Page)
+  - @buttons_partials.each do |partial|
+    = render :partial => partial
+%p.buttons
+  = save_model_and_continue_editing_button(model)
+  = save_model_button(model)
+  = save_model_and_promote_button(model)
+  or
+  = link_to 'Cancel', :action => 'index'

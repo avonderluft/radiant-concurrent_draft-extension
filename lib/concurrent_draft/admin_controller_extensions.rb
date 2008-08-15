@@ -3,6 +3,13 @@ module ConcurrentDraft::AdminControllerExtensions
     base.class_eval do
       helper_method :model
       helper_method :model_class
+      alias_method_chain :handle_new_or_edit_post, :promotion
+    end
+  end
+  
+  def handle_new_or_edit_post_with_promotion(options = {})
+    returning handle_new_or_edit_post_without_promotion(options) do |result|
+      model.promote_draft! if params[:promote] && !result
     end
   end
   

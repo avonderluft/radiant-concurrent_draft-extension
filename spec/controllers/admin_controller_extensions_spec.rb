@@ -8,7 +8,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
     login_as :admin
     @klass = controller.class.model_class
     @model_symbol = controller.send(:model_symbol)
-    @object = mock_model(controller.class.model_class, :promote_draft! => nil)
+    @object = mock_model(controller.class.model_class, :promote_draft! => nil, :save => true, :url => '')
     @object.errors.stub!(:full_messages).and_return([])
     @klass.stub!(:find).and_return(@object)
   end
@@ -104,10 +104,28 @@ shared_examples_for 'controller with scheduled draft promotion' do
     end
   end
 
+  describe "promotion in conjunction with saving" do
+    before :each do
+      @klass.stub!(:find_by_id).and_return(@object)
+      controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
+    end
+    
+    it "should promote the draft when the 'Save & Promote Now' button was pushed" do
+      @object.should_receive(:promote_draft!)
+      post :edit, :id => 1, :promote => 'Save & Promote Now'
+    end
+    
+    it "should not promote the draft when the 'Save & Promote Now' button was not pushed" do
+      @object.should_not_receive(:promote_draft!)
+      post :edit, :id => 1
+    end
+  end
+
   after :each do
     logout
   end
 end
+
 
 describe Admin::PageController, "with concurrent_draft functions" do
   it_should_behave_like 'controller with scheduled draft promotion'

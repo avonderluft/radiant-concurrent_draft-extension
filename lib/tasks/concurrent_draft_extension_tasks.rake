@@ -22,7 +22,14 @@ namespace :radiant do
           mkdir_p RAILS_ROOT + directory
           cp file, RAILS_ROOT + path
         end
-      end  
+      end
+      
+      desc "Create drafts for all snippets"
+      task :create_draft_snippets => :environment do
+        print 'copying content to draft_content for all snippets...'
+        Snippet.update_all('draft_content = content')
+        puts 'done.'
+      end
     end
   end
 end
