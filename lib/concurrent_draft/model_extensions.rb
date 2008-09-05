@@ -19,12 +19,16 @@ module ConcurrentDraft::ModelExtensions
     end
   end
 
+  def after_initialize
+    promote_draft! if respond_to?(:draft_promotion_scheduled_at) && draft_should_be_promoted?
+  end
+
   def has_draft_promotion_scheduled?
     !draft_promotion_scheduled_at.blank?
   end
   
   def has_draft_promoted?
-    !draft_promoted_at.blank? && draft_promoted_at < Time.now
+    !draft_promoted_at.blank? && draft_promoted_at <= Time.now
   end
 
   def cancel_promotion!

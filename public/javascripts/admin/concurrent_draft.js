@@ -17,14 +17,25 @@ Draft.RevertLink = Behavior.create({
   onclick: function(e){
     e.stop();
     this.element.up('.active').removeClassName('active');
-    $$('input[name*="[content]"]').each(this.copyData);
+    $$('input[name*="[content]"]').each(this.copyData, this);
     center(this.popup);
     this.popup.show();
   },
   copyData: function(input){
-    var draft_id = input['name'].gsub(/content/, 'draft_content').gsub(/[\[\]]+/, '_').sub(/\_*$/, '');
-    if($(draft_id))
-      $(draft_id).value = input.value;
+    var draft_id = input.name.gsub(/content/, 'draft_content').gsub(/[\[\]]+/, '_').sub(/\_*$/, '');
+    var draft = $(draft_id);
+    // The following was modified to accommodate templates
+    if(draft){
+      switch(draft.type){
+        case 'checkbox':
+          draft.checked = (input.value == draft.value);
+          break;
+        default:
+          draft.value = input.value;
+          break;
+      }
+      draft.fire('draft:reverted');
+    }
   }
 });
 

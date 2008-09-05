@@ -52,6 +52,12 @@ share_examples_for "model with concurrent draft" do
     @object.draft_promotion_scheduled_at = 1.minute.ago
     @object.should be_draft_should_be_promoted
   end
+  
+  it "should automatically promote the draft when necessary on load" do
+    @object.class.update_all({:draft_promotion_scheduled_at => 2.minutes.ago}, :id => @object.id)
+    new_object = @object.class.find(@object.id)
+    new_object.should have_draft_promoted
+  end
 end
 
 describe Snippet, "with concurrent draft" do

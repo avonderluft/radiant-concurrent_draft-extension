@@ -30,6 +30,17 @@ namespace :radiant do
         Snippet.update_all('draft_content = content')
         puts 'done.'
       end
+      
+      desc "Promote all drafts of all assets"
+      task :promote_all => :environment do
+        [Page, Snippet, Layout].each do |asset|
+          print "Promoting all #{asset.to_s.pluralize}..."
+          @user = User.find(:first) ## Admin user
+          asset.find(:all).each(&:promote_draft!)
+          asset.update_all("updated_by_id = #{@user.id}")
+          puts "done."
+        end
+      end
     end
   end
 end
