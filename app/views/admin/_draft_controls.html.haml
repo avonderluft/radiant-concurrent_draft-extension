@@ -1,31 +1,40 @@
 - include_stylesheet 'concurrent_draft'
 - include_javascript 'lowpro'
 - include_javascript 'admin/concurrent_draft'
+
 #draft-controls-container
   #draft-controls
     .status
-      - if model.has_draft_promotion_scheduled?
+      - if @controller.model.has_draft_promotion_scheduled?
         Scheduled
-        = model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p')
+        = @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p')
+      - elsif @controller.model.publishable? && ! @controller.model.published?
+        %em Unpublished
       - else
-        %em Draft promotion unscheduled
+        %em Draft promotion unscheduled 
     %ul.dropdown
-      %li.schedule_draft= link_to 'Schedule promotion', '#schedule-draft-popup'
-      %li.publish= link_to 'Promote now', {:action => 'schedule_draft_promotion', :commit => model_class.promote_now_text}, :method => :post
-      - if model.has_draft_promotion_scheduled?
-        %li.cancel= link_to 'Cancel promotion', {:action => 'schedule_draft_promotion', :commit => model_class.cancel_promotion_text}, :method => :post
-      %li.revert= link_to 'Revert draft', '#'
+      - if current_user.admin? || current_user.publisher?
+        %li.schedule_draft= link_to 'Schedule promotion', '#schedule-draft-popup'
+        %li.publish= link_to 'Promote now', {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :method => :post
+        - if @controller.model.has_draft_promotion_scheduled?
+          %li.cancel= link_to 'Cancel promotion', {:action => 'schedule_draft_promotion', :commit => @controller.model_class.cancel_promotion_text}, :method => :post
+        - if @controller.model.publishable? && @controller.model.published?
+          %li.unpublish= link_to 'Unpublish', {:action => 'unpublish'}, :method => :post
+        - if @controller.model.has_draft_promoted?
+          %li.revert= link_to 'Revert draft', '#'
+
 - content_for :popups do
-  #schedule-draft-popup.popup{:style => 'display:none'}
-    %h3 Schedule draft promotion
-    - form_for model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post} do |f|
-      %div
-        = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15
-        = hidden_field_tag :commit, model_class.schedule_promotion_text
-      %p{:style => 'text-align: right'}
-        %button{:type => 'submit'} Schedule
-        or
-        = link_to_function 'Cancel', "this.up('.popup').hide()", :class => 'close'
+  - if current_user.admin? || current_user.publisher?
+    #schedule-draft-popup.popup{:style => 'display:none'}
+      %h3 Schedule draft promotion
+      - form_for @controller.model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post} do |f|
+        %div
+          = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15
+          = hidden_field_tag :commit, @controller.model_class.schedule_promotion_text
+        %p{:style => 'text-align: right'}
+          %button{:type => 'submit'} Schedule
+          or
+          = link_to_function 'Cancel', "this.up('.popup').hide()", :class => 'close'
   #revert-draft-popup.popup{:style => 'display:none'}
     %p
       The draft has been replaced with the live content.  

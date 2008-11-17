@@ -4,6 +4,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
   scenario :users
 
   before :each do
+    create_user "Publisher", :publisher => true
     controller.cache.clear
     login_as :admin
     @klass = controller.class.model_class
@@ -28,6 +29,33 @@ shared_examples_for 'controller with scheduled draft promotion' do
       do_post
       response.should be_redirect
       response.should redirect_to(:action => "edit")
+    end
+
+    [:admin, :publisher].each do |user|
+      before :each do
+        login_as user
+      end
+      
+      it "should allow #{user}" do
+        do_post
+        response.should be_redirect
+        response.should redirect_to(:action => "edit")
+        flash[:error].should be_blank
+      end
+    end
+    
+    [:developer, :existing].each do |user|
+      before :each do
+        login_as user
+      end
+      
+      it "should deny #{user}" do
+        pending "LoginSystem + RSpec wonkiness again makes these fail... works in dev/prod mode"
+        do_post
+        response.should be_redirect
+        response.should redirect_to(:action => "edit")
+        flash[:error].should == 'You must have publishing privileges to execute this action.'
+      end
     end
   end
 
@@ -59,7 +87,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
       @object.stub!(:update_attributes)
       @object.stub!(:draft_promotion_scheduled_at).and_return(3.days.from_now)
     end
-
+    
     it "should not promote the draft" do
       @object.should_not_receive(:promote_draft!)
       do_post
@@ -120,7 +148,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
       post :edit, :id => 1
     end
   end
-
+  
   after :each do
     logout
   end
@@ -138,4 +166,3 @@ end
 describe Admin::LayoutController, "with concurrent_draft functions" do
   it_should_behave_like 'controller with scheduled draft promotion'
 end
-

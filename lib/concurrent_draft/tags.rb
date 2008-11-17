@@ -47,10 +47,10 @@ module ConcurrentDraft::Tags
         ###    END CONCURRENT DRAFTS CHANGE    ###
         tag.globals.page.render_snippet(snippet)
       else
-        raise TagError.new('snippet not found')
+        raise StandardTags::TagError.new("snippet not found: #{name}")
       end
     else
-      raise TagError.new("`snippet' tag must contain `name' attribute")
+      raise StandardTags::TagError.new("`snippet' tag must contain `name' attribute")
     end
   end
 end

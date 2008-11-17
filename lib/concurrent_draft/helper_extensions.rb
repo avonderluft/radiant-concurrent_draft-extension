@@ -22,18 +22,18 @@ module ConcurrentDraft::HelperExtensions
     end
   end
   
-  def save_model_button(model)
-    label = model.new_record? ? "Create" : "Save"
+  def save_model_button(_model)
+    label = _model.new_record? ? "Create" : "Save"
     submit_tag "#{label} and Exit", :class => 'button'
   end
   
-  def save_model_and_continue_editing_button(model)
-    label = model.new_record? ? "Create" : "Save"
+  def save_model_and_continue_editing_button(_model)
+    label = _model.new_record? ? "Create" : "Save"
     submit_tag label, :name => 'continue', :class => 'button' 
   end
   
-  def save_model_and_promote_button(model)
-    label = model.new_record? ? "Create" : "Save"
+  def save_model_and_promote_button(_model)
+    label = _model.new_record? ? "Create" : "Save"
     submit_tag "#{label} and Promote Now", :name => 'promote', :class => 'button'
   end
 end

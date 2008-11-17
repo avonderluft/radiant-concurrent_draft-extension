@@ -66,6 +66,9 @@ describe Snippet, "with concurrent draft" do
     @object = snippets(:first)
     @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
   end
+  it "should not be publishable" do
+    @object.publishable?.should_not be_true
+  end
   it_should_behave_like 'model with concurrent draft'
 end
 
@@ -74,6 +77,9 @@ describe Layout, "with concurrent draft" do
   before :each do
     @object = layouts(:main)
     @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
+  end
+  it "should not be publishable" do
+    @object.publishable?.should_not be_true
   end
   it_should_behave_like 'model with concurrent draft'
 end
@@ -101,6 +107,8 @@ describe Page, 'with concurrent draft' do
   before :each do
     @object = pages(:home)
   end
-
+  it "should be publishable" do
+    @object.publishable?.should be_true
+  end
   it_should_behave_like 'model with concurrent draft'
 end
