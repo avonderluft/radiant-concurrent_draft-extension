@@ -34,6 +34,7 @@ class ConcurrentDraftExtension < Radiant::Extension
       admin.send(view).edit.form_bottom.delete 'edit_buttons'
       admin.send(view).edit.add :form_bottom, 'admin/edit_buttons'
     end
+    admin.page.edit.add :extended_metadata, 'published_meta'
     Time::DATE_FORMATS[:long_civilian] = lambda {|time| time.strftime("%B %d, %Y %I:%M%p").gsub(/(\s+)0(\d+)/, '\1\2') }
   end
 end
