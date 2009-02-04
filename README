@@ -8,10 +8,8 @@ Every page, snippet and layout hence can have a concurrent draft and production 
 
 == Requirements
 
-If you running Radiant version 0.6.9 or earlier, you will need to use radiant edge.  To install edge for your Radiant 
-project,
-run this from your Radiant root:
-$ rake radiant:freeze:edge
+This extension is compatible with Radiant 0.6.9, but not earlier versions.  
+It has not yet been updated to be compatible with 0.7.x but probably will be after there is a stable release.
 
 == Installation
 
