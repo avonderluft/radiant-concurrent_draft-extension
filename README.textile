@@ -1,0 +1,35 @@
+h2. Concurrent Draft
+
+Created by: Andrew vonderLuft and Sean Cribbs, August 2008, in Portland Oregon
+
+The _ConcurrentDraft_ extension enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.  Every page, snippet and layout hence can have a concurrent draft and production version.
+
+h3. Version History
+
+* 1.0 - Initial Release - Radiant 0.6.9 compatible
+
+h3. Requirements
+
+This extension is compatible with Radiant 0.6.9, but not earlier versions.  It has not yet been updated to be compatible with 0.7.x but probably will be after there is a stable release.
+
+h3. Installation
+
+With the Radiant Extensions registry:
+
+From your Radiant root run:
+
+$ script/extension install concurrent_draft
+
+Restart your radiant app, and you should be good to go.
+
+h3. Caveats
+
+Scheduled times are dependent on the ActiveRecord time setting.  If you want to use local time, add this to your environment.rb:
+
+<pre>config.active_record.default_timezone = :local</pre>
+
+h3. Acknowledgments
+
+* Andrew conceived of the ideas for this extension and its initial design,  and did model changes, migrations, and initial code for pages.
+* Sean collaborated on its expansion and refactoring to include snippets and layouts, and produced most of the final code, including all of the UI.
+* After some discussion, they both rightly identified the mystery piece as a Haydn Cello concerto.
