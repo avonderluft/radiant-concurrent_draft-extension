@@ -1,0 +1,11 @@
+.row
+  %p
+    %label{:for=>"page_layout_id"}
+      Layout
+    = select "page", "layout_id", [['<inherit>', '']] + Layout.find(:all).map { |s| [s.name, s.id] }
+  %p
+    %label{:for=>"page_class_name"}
+      Page Type
+    = select "page", "class_name", [['<normal>', 'Page']] + Page.descendants.map { |p| [p.display_name, p.name] }.sort_by { |p| p.first }
+  = render_region :layout_row
+%span.clear &nbsp;
