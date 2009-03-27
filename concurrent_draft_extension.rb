@@ -8,12 +8,12 @@ class ConcurrentDraftExtension < Radiant::Extension
 
   define_routes do |map|
     map.page_schedule_draft_promotion 'admin/pages/schedule_draft_promotion/:id', 
-      :controller => 'admin/page', :action => 'schedule_draft_promotion'
+      :controller => 'admin/pages', :action => 'schedule_draft_promotion'
     map.snippet_schedule_draft_promotion 'admin/snippet/schedule_draft_promotion/:id', 
-      :controller => 'admin/snippet', :action => 'schedule_draft_promotion'
+      :controller => 'admin/snippets', :action => 'schedule_draft_promotion'
     map.layout_schedule_draft_promotion 'admin/layout/schedule_draft_promotion/:id', 
-      :controller => 'admin/layout', :action => 'schedule_draft_promotion' 
-    map.page_unpublish 'admin/pages/unpublish/:id', :controller => 'admin/page', :action => 'unpublish'
+      :controller => 'admin/layouts', :action => 'schedule_draft_promotion' 
+    map.page_unpublish 'admin/pages/unpublish/:id', :controller => 'admin/pages', :action => 'unpublish'
   end
   
   def activate
@@ -22,7 +22,7 @@ class ConcurrentDraftExtension < Radiant::Extension
     end
     Page.send :include, ConcurrentDraft::PageExtensions
     Page.send :include, ConcurrentDraft::Tags
-    [Admin::PageController, Admin::SnippetController, Admin::LayoutController].each do |klass|
+    [Admin::PagesController, Admin::SnippetsController, Admin::LayoutsController].each do |klass|
       klass.send :include, ConcurrentDraft::AdminControllerExtensions
       klass.class_eval do
         helper ConcurrentDraft::HelperExtensions
