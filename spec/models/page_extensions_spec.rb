@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Page, "with concurrent draft" do
-  scenario :pages_with_layouts
+  dataset :pages_with_layouts
   before :each do
     @page = pages(:home)
   end

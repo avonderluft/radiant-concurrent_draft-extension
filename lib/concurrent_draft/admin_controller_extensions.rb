@@ -1,9 +1,9 @@
 module ConcurrentDraft::AdminControllerExtensions
   def self.included(base)
     base.class_eval do
-      helper_method :model
-      helper_method :model_class
-      public :model, :model_class
+      # helper_method :model
+      # helper_method :model_class
+      # public :model, :model_class
       # alias_method_chain :handle_new_or_edit_post, :promotion
       only_allow_access_to :schedule_draft_promotion, :unpublish,
           :when => [:publisher, :admin],

@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 shared_examples_for 'controller with scheduled draft promotion' do
-  scenario :users
+  dataset :users
 
   before :each do
     create_user "Publisher", :publisher => true
@@ -155,14 +155,14 @@ shared_examples_for 'controller with scheduled draft promotion' do
 end
 
 
-describe Admin::PageController, "with concurrent_draft functions" do
+describe Admin::PagesController, "with concurrent_draft functions" do
   it_should_behave_like 'controller with scheduled draft promotion'
 end
 
-describe Admin::SnippetController, "with concurrent_draft functions" do
+describe Admin::SnippetsController, "with concurrent_draft functions" do
   it_should_behave_like 'controller with scheduled draft promotion'
 end
 
-describe Admin::LayoutController, "with concurrent_draft functions" do
+describe Admin::LayoutsController, "with concurrent_draft functions" do
   it_should_behave_like 'controller with scheduled draft promotion'
 end

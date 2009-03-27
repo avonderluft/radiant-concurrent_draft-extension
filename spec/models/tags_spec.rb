@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "ConcurrentDraft::Tags" do
-  scenario :pages, :snippets
+  dataset :pages, :snippets
   describe '<r:content>' do
     before :each do
       @page = pages(:home)

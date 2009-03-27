@@ -61,7 +61,7 @@ share_examples_for "model with concurrent draft" do
 end
 
 describe Snippet, "with concurrent draft" do
-  scenario :snippets
+  dataset :snippets
   before :each do
     @object = snippets(:first)
     @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
@@ -73,7 +73,7 @@ describe Snippet, "with concurrent draft" do
 end
 
 describe Layout, "with concurrent draft" do
-  scenario :layouts
+  dataset :layouts
   before :each do
     @object = layouts(:main)
     @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
@@ -85,7 +85,7 @@ describe Layout, "with concurrent draft" do
 end
 
 describe PagePart, "with concurrent draft" do
-  scenario :pages
+  dataset :pages
   before :each do
     @object = pages(:home).parts.first
     @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
@@ -103,7 +103,7 @@ describe PagePart, "with concurrent draft" do
 end
 
 describe Page, 'with concurrent draft' do
-  scenario :pages
+  dataset :pages
   before :each do
     @object = pages(:home)
   end
