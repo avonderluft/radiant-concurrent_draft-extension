@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 shared_examples_for 'controller with scheduled draft promotion' do
-  scenario :users
+  dataset :users
 
   before :each do
     create_user "Publisher", :publisher => true
@@ -132,10 +132,10 @@ shared_examples_for 'controller with scheduled draft promotion' do
     end
   end
 
-  describe "promotion in conjunction with saving" do
+  describe "promotion in conjunction with creating" do
     before :each do
       @klass.stub!(:find_by_id).and_return(@object)
-      controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
+      controller.stub!(:create_without_promotion).and_return(false)
     end
     
     it "should promote the draft when the 'Save & Promote Now' button was pushed" do
@@ -148,7 +148,26 @@ shared_examples_for 'controller with scheduled draft promotion' do
       post :edit, :id => 1
     end
   end
-  
+
+  describe "promotion in conjunction with updating" do
+    before :each do
+      @klass.stub!(:find_by_id).and_return(@object)
+      controller.stub!(:update_without_promotion).and_return(false)
+    end
+
+    it "should promote the draft when the 'Save & Promote Now' button was pushed" do
+      @object.should_receive(:promote_draft!)
+      put :edit, :id => 1, :promote => 'Save & Promote Now'
+    end
+
+    it "should not promote the draft when the 'Save & Promote Now' button was not pushed" do
+      @object.should_not_receive(:promote_draft!)
+      put :edit, :id => 1
+    end
+  end
+ 
+
+ 
   after :each do
     logout
   end

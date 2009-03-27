@@ -3,7 +3,7 @@ require 'site_controller'
 SiteController.module_eval { def rescue_action(e); raise e; end }
 
 describe SiteController, "(Extended) - concurrent draft changes" do
-  scenario :users_and_pages
+  dataset :users_and_pages
   
   before :each do
     @page = mock_model(Page, :published? => false, :draft_should_be_promoted? => true, :process => nil, :update_attribute => nil)

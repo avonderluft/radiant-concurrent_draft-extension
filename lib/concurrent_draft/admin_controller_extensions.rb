@@ -4,7 +4,8 @@ module ConcurrentDraft::AdminControllerExtensions
       helper_method :model
       helper_method :model_class
       public :model, :model_class
-      alias_method_chain :handle_new_or_edit_post, :promotion
+      alias_method_chain :create, :promotion
+      alias_method_chain :update, :promotion
       only_allow_access_to :schedule_draft_promotion, :unpublish,
           :when => [:publisher, :admin],
           :denied_message => "You must have publisher privileges to execute this action.",
@@ -12,8 +13,17 @@ module ConcurrentDraft::AdminControllerExtensions
     end
   end
 
-  def handle_new_or_edit_post_with_promotion(options = {})
-    returning handle_new_or_edit_post_without_promotion(options) do |result|
+
+  # create
+  def create_with_promotion(options = {})
+    returning create_without_promotion(options) do |result|
+      model.promote_draft! if params[:promote] && !result && (current_user.publisher? || current_user.admin?)
+    end
+  end
+  # update
+
+  def update_with_promotion(options = {})
+    returning update_without_promotion(options) do |result|
       model.promote_draft! if params[:promote] && !result && (current_user.publisher? || current_user.admin?)
     end
   end
