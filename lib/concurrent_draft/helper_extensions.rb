@@ -21,7 +21,7 @@ module ConcurrentDraft::HelperExtensions
       %{<p class="clear">&nbsp;</p>}
     end
   end
-  
+
   def save_model_button(_model)
     label = _model.new_record? ? "Create" : "Save"
     submit_tag "#{label} and Exit", :class => 'button'

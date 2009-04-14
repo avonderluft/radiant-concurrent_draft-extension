@@ -1,22 +1,26 @@
 module ConcurrentDraft::AdminControllerExtensions
   def self.included(base)
     base.class_eval do
-      # helper_method :model
-      # helper_method :model_class
-      # public :model, :model_class
-      # alias_method_chain :handle_new_or_edit_post, :promotion
+      helper_method :model
+      helper_method :model_class
+      public :model, :model_class
       only_allow_access_to :schedule_draft_promotion, :unpublish,
           :when => [:publisher, :admin],
           :denied_message => "You must have publisher privileges to execute this action.",
           :denied_url => {:action => 'edit'}
+      after_filter :check_for_promote_now, :only => :update
     end
   end
 
-  # def handle_new_or_edit_post_with_promotion(options = {})
-  #   returning handle_new_or_edit_post_without_promotion(options) do |result|
-  #     model.promote_draft! if params[:promote] && !result && (current_user.publisher? || current_user.admin?)
-  #   end
-  # end
+  def authorized_user?
+    (current_user.publisher? || current_user.admin?)
+  end
+
+  def check_for_promote_now
+    model.promote_draft! if params[:promote] && authorized_user?
+    flash[:notice] = "The existing draft #{model_class.to_s.downcase} has been saved and promoted, and is now live."
+    flash.keep
+  end
 
   def schedule_draft_promotion
     self.model = model_class.find(params[:id])
@@ -36,12 +40,12 @@ module ConcurrentDraft::AdminControllerExtensions
     end
     redirect_to :action => "edit"
   end
-  
+
   def unpublish
     self.model = model_class.find(params[:id])
-    model.unpublish
+    model.unpublish!
     flash[:notice] = "#{model_class} has been unpublished and reset to draft mode -- no draft promotion scheduled."
     redirect_to :action => "edit"
   end
-  
+
 end

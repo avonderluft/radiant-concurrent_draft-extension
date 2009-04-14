@@ -8,7 +8,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
     controller.cache.clear
     login_as :admin
     @klass = controller.class.model_class
-    @model_symbol = controller.send(:model_symbol)
+    @model_symbol = @klass.name.symbolize
     @object = mock_model(controller.class.model_class, :promote_draft! => nil, :save => true, :url => '')
     @object.errors.stub!(:full_messages).and_return([])
     @klass.stub!(:find).and_return(@object)
@@ -21,6 +21,8 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     it "should load the model" do
       @klass.should_receive(:find).with('1').and_return(@object)
+      puts @object.class
+      @object.should be_a(@object.class)
       do_post
       assigns[@model_symbol].should == @object
     end
@@ -33,13 +35,15 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     [:admin, :publisher].each do |user|
       before :each do
-        login_as user
+        request.session[:user_id] = user_id(user)
+        rputs *User.all
       end
       
       it "should allow #{user}" do
         do_post
         response.should be_redirect
         response.should redirect_to(:action => "edit")
+        puts flash[:error]
         flash[:error].should be_blank
       end
     end
@@ -50,11 +54,10 @@ shared_examples_for 'controller with scheduled draft promotion' do
       end
       
       it "should deny #{user}" do
-        pending "LoginSystem + RSpec wonkiness again makes these fail... works in dev/prod mode"
         do_post
         response.should be_redirect
         response.should redirect_to(:action => "edit")
-        flash[:error].should == 'You must have publishing privileges to execute this action.'
+        flash[:error].should == 'You must have publisher privileges to execute this action.'
       end
     end
   end
@@ -135,7 +138,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
   describe "promotion in conjunction with saving" do
     before :each do
       @klass.stub!(:find_by_id).and_return(@object)
-      controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
+      # controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
     end
     
     it "should promote the draft when the 'Save & Promote Now' button was pushed" do

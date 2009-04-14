@@ -6,6 +6,7 @@ The _ConcurrentDraft_ extension enables default draft versions of pages, snippet
 
 h3. Version History
 
+* 1.1 - Upgrade to Radiant 0.7.x compatibility
 * 1.0 - Initial Release - Radiant 0.6.9 compatible
 
 h3. Requirements

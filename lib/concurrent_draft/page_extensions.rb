@@ -6,8 +6,8 @@ module ConcurrentDraft::PageExtensions
     super
   end
   
-  def unpublish
-    parts.each(&:unpublish)
+  def unpublish!
+    parts.each(&:unpublish!)
     update_attributes('published_at' => nil, 'status_id' => Status[:draft].id)
     super
   end
