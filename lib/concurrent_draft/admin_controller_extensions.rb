@@ -8,7 +8,7 @@ module ConcurrentDraft::AdminControllerExtensions
           :when => [:publisher, :admin],
           :denied_message => "You must have publisher privileges to execute this action.",
           :denied_url => {:action => 'edit'}
-      after_filter :check_for_promote_now, :only => :update
+      after_filter :check_for_promote_now, :only => [:create, :update]
     end
   end
 
@@ -17,9 +17,11 @@ module ConcurrentDraft::AdminControllerExtensions
   end
 
   def check_for_promote_now
-    model.promote_draft! if params[:promote] && authorized_user?
-    flash[:notice] = "The existing draft #{model_class.to_s.downcase} has been saved and promoted, and is now live."
-    flash.keep
+    if params[:promote] && authorized_user?
+      model.promote_draft!
+      flash[:notice] = "The existing draft #{model_class.to_s.downcase} has been saved and promoted, and is now live."
+      flash.keep
+    end
   end
 
   def schedule_draft_promotion
