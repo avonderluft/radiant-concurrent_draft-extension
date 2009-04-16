@@ -1,8 +1,8 @@
 h2. Concurrent Draft
 
-Created by: Andrew vonderLuft and Sean Cribbs, August 2008, in Portland Oregon
+The _ConcurrentDraft_ extension enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.  Every page, snippet and layout hence can have a concurrent draft (dev) and production version.
 
-The _ConcurrentDraft_ extension enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.  Every page, snippet and layout hence can have a concurrent draft and production version.
+Created by: Andrew vonderLuft and Sean Cribbs, August 2008, in Portland Oregon
 
 h3. Version History
 
@@ -11,7 +11,8 @@ h3. Version History
 
 h3. Requirements
 
-This extension is compatible with Radiant 0.6.9, but not earlier versions.  It has not yet been updated to be compatible with 0.7.x but probably will be after there is a stable release.
+* Radiant 0.7 or greater
+* Tag 1.0 is compatible with 0.6.9
 
 h3. Installation
 
@@ -22,6 +23,10 @@ From your Radiant root run:
 $ script/extension install concurrent_draft
 
 Restart your radiant app, and you should be good to go.
+
+h3. To do
+
+* With upgrade to Radiant 0.7 some specs are not running correctly.
 
 h3. Caveats
 
