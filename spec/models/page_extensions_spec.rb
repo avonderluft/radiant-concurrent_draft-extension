@@ -29,7 +29,7 @@ describe Page, "with concurrent draft" do
     
     before(:each) do
       @page.promote_draft!
-      @page.unpublish
+      @page.unpublish!
     end
     
     it "should set the content of its page parts to nil" do

@@ -21,7 +21,6 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     it "should load the model" do
       @klass.should_receive(:find).with('1').and_return(@object)
-      @object.should be_a(@object.class)
       do_post
       assigns[@model_symbol].should == @object
     end
