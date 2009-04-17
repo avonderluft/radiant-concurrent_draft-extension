@@ -21,7 +21,6 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     it "should load the model" do
       @klass.should_receive(:find).with('1').and_return(@object)
-      puts @object.class
       @object.should be_a(@object.class)
       do_post
       assigns[@model_symbol].should == @object
@@ -36,14 +35,12 @@ shared_examples_for 'controller with scheduled draft promotion' do
     [:admin, :publisher].each do |user|
       before :each do
         request.session[:user_id] = user_id(user)
-        rputs *User.all
       end
       
       it "should allow #{user}" do
         do_post
         response.should be_redirect
         response.should redirect_to(:action => "edit")
-        puts flash[:error]
         flash[:error].should be_blank
       end
     end
