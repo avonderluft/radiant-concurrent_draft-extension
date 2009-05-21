@@ -29,7 +29,7 @@
       %h3 Schedule draft promotion
       - form_for @controller.model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post} do |f|
         %div
-          = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15
+          = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15, :twelve_hour => true
           = hidden_field_tag :commit, @controller.model_class.schedule_promotion_text
         %p{:style => 'text-align: right'}
           %button{:type => 'submit'} Schedule
