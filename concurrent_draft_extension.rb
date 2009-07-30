@@ -1,5 +1,9 @@
 # Uncomment this if you reference any of your controllers in activate
-require_dependency 'application'
+begin
+  require_dependency 'application_controller'
+rescue MissingSourceFile
+  require_dependency 'application'
+end
 
 class ConcurrentDraftExtension < Radiant::Extension
   version "1.1"

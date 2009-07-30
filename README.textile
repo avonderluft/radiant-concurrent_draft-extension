@@ -6,7 +6,8 @@ Created by: Andrew vonderLuft and Sean Cribbs, August 2008, in Portland Oregon
 
 h3. Version History
 
-* 0.7.1 - Upgrade to Radiant 0.7.1 compatibility
+* 0.8.0 - Compatible with Radiant 0.8.0 and above
+* 0.7.1 - Compatible with Radiant 0.7.1
 
 h3. Requirements
 
