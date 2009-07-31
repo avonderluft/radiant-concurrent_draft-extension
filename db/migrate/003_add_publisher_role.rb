@@ -4,6 +4,6 @@ class AddPublisherRole < ActiveRecord::Migration
   end
   
   def self.down
-    remove_column :users, :publisher, :boolean, :default => false
+    remove_column :users, :publisher
   end
 end

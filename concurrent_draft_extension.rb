@@ -2,7 +2,7 @@
 require_dependency 'application'
 
 class ConcurrentDraftExtension < Radiant::Extension
-  version "1.1"
+  version "0.7.1"
   description "Enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production"
   url "http://github.com/avonderluft/concurrent_draft/tree/master"
 
