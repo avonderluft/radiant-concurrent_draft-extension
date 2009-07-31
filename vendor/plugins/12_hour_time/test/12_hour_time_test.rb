@@ -43,7 +43,7 @@ class TwelveHourTimeTest < Test::Unit::TestCase
     expected = select_tag 'date[hour]', options, :id => 'date_hour'
     expected.nstrip!
 
-    actual = select_hour time, :twelve_hour => false
+    actual = select_hour time, :twelve_hour => false 
     assert_equal(expected, actual.nstrip, "24 hour select, explicit")
 
     actual = select_hour time
