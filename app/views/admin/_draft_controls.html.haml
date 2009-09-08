@@ -1,4 +1,4 @@
-- include_stylesheet 'concurrent_draft'
+- include_stylesheet 'admin/concurrent_draft'
 - include_javascript 'lowpro'
 - include_javascript 'admin/concurrent_draft'
 
@@ -13,7 +13,7 @@
       - else
         %em Draft promotion unscheduled 
     %ul.dropdown
-      - if current_user.admin? || current_user.publisher?
+      - if @controller.authorized_user?
         %li.schedule_draft= link_to 'Schedule promotion', '#schedule-draft-popup'
         %li.publish= link_to 'Promote now', {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :method => :post
         - if @controller.model.has_draft_promotion_scheduled?
@@ -24,12 +24,12 @@
           %li.revert= link_to 'Revert draft', '#'
 
 - content_for :popups do
-  - if current_user.admin? || current_user.publisher?
+  - if @controller.authorized_user?
     #schedule-draft-popup.popup{:style => 'display:none'}
       %h3 Schedule draft promotion
       - form_for @controller.model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post} do |f|
         %div
-          = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15
+          = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15, :twelve_hour => true
           = hidden_field_tag :commit, @controller.model_class.schedule_promotion_text
         %p{:style => 'text-align: right'}
           %button{:type => 'submit'} Schedule

@@ -16,10 +16,14 @@ class UpdateSchemata < ActiveRecord::Migration
   end
 
   def self.down
+    remove_column :page_parts, :draft_content 
     remove_column :pages, :draft_promotion_scheduled_at
-    remove_column :pages, :draft_promoted_at
-    remove_column :page_parts, :draft_content
+    remove_column :pages,:draft_promoted_at
     remove_column :snippets, :draft_content
+    remove_column :snippets, :draft_promotion_scheduled_at
+    remove_column :snippets, :draft_promoted_at
     remove_column :layouts, :draft_content
+    remove_column :layouts, :draft_promotion_scheduled_at
+    remove_column :layouts, :draft_promoted_at
   end
 end

@@ -8,7 +8,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
     controller.cache.clear
     login_as :admin
     @klass = controller.class.model_class
-    @model_symbol = controller.send(:model_symbol)
+    @model_symbol = @klass.name.symbolize
     @object = mock_model(controller.class.model_class, :promote_draft! => nil, :save => true, :url => '')
     @object.errors.stub!(:full_messages).and_return([])
     @klass.stub!(:find).and_return(@object)
@@ -33,7 +33,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     [:admin, :publisher].each do |user|
       before :each do
-        login_as user
+        request.session[:user_id] = user_id(user)
       end
       
       it "should allow #{user}" do
@@ -50,11 +50,10 @@ shared_examples_for 'controller with scheduled draft promotion' do
       end
       
       it "should deny #{user}" do
-        pending "LoginSystem + RSpec wonkiness again makes these fail... works in dev/prod mode"
         do_post
         response.should be_redirect
         response.should redirect_to(:action => "edit")
-        flash[:error].should == 'You must have publishing privileges to execute this action.'
+        flash[:error].should == 'You must have publisher privileges to execute this action.'
       end
     end
   end
@@ -132,10 +131,10 @@ shared_examples_for 'controller with scheduled draft promotion' do
     end
   end
 
-  describe "promotion in conjunction with creating" do
+  describe "promotion in conjunction with saving" do
     before :each do
       @klass.stub!(:find_by_id).and_return(@object)
-      controller.stub!(:create_without_promotion).and_return(false)
+      # controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
     end
     
     it "should promote the draft when the 'Save & Promote Now' button was pushed" do
@@ -148,26 +147,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
       post :edit, :id => 1
     end
   end
-
-  describe "promotion in conjunction with updating" do
-    before :each do
-      @klass.stub!(:find_by_id).and_return(@object)
-      controller.stub!(:update_without_promotion).and_return(false)
-    end
-
-    it "should promote the draft when the 'Save & Promote Now' button was pushed" do
-      @object.should_receive(:promote_draft!)
-      put :edit, :id => 1, :promote => 'Save & Promote Now'
-    end
-
-    it "should not promote the draft when the 'Save & Promote Now' button was not pushed" do
-      @object.should_not_receive(:promote_draft!)
-      put :edit, :id => 1
-    end
-  end
- 
-
- 
+  
   after :each do
     logout
   end

@@ -5,7 +5,6 @@ module ConcurrentDraft::ModelExtensions
     base.class_eval do
       validate :promotion_date_in_future
     end
-    
   end
 
   module ClassMethods
@@ -45,7 +44,7 @@ module ConcurrentDraft::ModelExtensions
     update_attributes("draft_promotion_scheduled_at" => nil, "draft_promoted_at" => Time.now) if respond_to?(:draft_promoted_at)
   end
   
-  def unpublish
+  def unpublish!
     update_attributes("content" => nil) if respond_to?(:content) && respond_to?(:draft_content)
     update_attributes("draft_promotion_scheduled_at" => nil, "draft_promoted_at" => nil) if respond_to?(:draft_promoted_at)
   end

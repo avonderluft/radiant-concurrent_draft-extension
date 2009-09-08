@@ -1,7 +1,7 @@
 module ConcurrentDraft::HelperExtensions
   def updated_stamp(model)
     unless model.new_record?
-      updated_by = (model.updated_by || model.created_by)
+      updated_by = (model.updated_by || model.created_by) if model.respond_to?(:updated_by)
       login = updated_by ? updated_by.login : nil
       time = (model.updated_at || model.created_at)
       promoted_at = model.draft_promoted_at if model.respond_to?(:draft_promoted_at)
@@ -21,7 +21,7 @@ module ConcurrentDraft::HelperExtensions
       %{<p class="clear">&nbsp;</p>}
     end
   end
-  
+
   def save_model_button(_model)
     label = _model.new_record? ? "Create" : "Save"
     submit_tag "#{label} and Exit", :class => 'button'
