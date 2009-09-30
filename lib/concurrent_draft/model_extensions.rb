@@ -42,7 +42,7 @@ module ConcurrentDraft::ModelExtensions
   def promote_draft!
     update_attributes("content" => draft_content) if respond_to?(:content) && respond_to?(:draft_content)
     update_attributes("draft_promotion_scheduled_at" => nil, "draft_promoted_at" => Time.now) if respond_to?(:draft_promoted_at)
-    Radiant::Cache.clear
+    Radiant::Cache.clear if defined?(Radiant::Cache)
   end
   
   def unpublish!
