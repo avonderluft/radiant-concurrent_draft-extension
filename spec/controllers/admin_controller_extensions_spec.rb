@@ -44,7 +44,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
       end
     end
     
-    [:developer, :existing].each do |user|
+    [:designer, :existing].each do |user|
       before :each do
         login_as user
       end
