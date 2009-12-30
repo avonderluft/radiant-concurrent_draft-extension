@@ -12,7 +12,6 @@ module ConcurrentDraft::AdminControllerExtensions
     end
   end
 
-
   def authorized_user?
     (current_user.publisher? || current_user.admin?)
   end
