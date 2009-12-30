@@ -5,9 +5,14 @@
     %span.checkbox
       = check_box "user", "admin"
       %label{:for=> "user_admin"} Administrator
-    %span.checkbox
-      = check_box "user", "designer"
-      %label{:for=> "user_designer"} Designer
+    - if Radiant::Version.to_s >= "0.9"  
+      %span.checkbox
+        = check_box "user", "designer"
+        %label{:for=> "user_designer"} Designer
+    - else
+      %span.checkbox
+        = check_box "user", "developer"
+        %label{:for=> "user_developer"} Developer
     %span.checkbox
       = check_box "user", "publisher"
       %label{:for=>"user_publisher"} Publisher
