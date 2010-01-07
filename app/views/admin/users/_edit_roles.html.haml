@@ -1,20 +1,26 @@
-%tr
-  %th.label
-    %label{:for=>"user_admin"} Roles
-  %td.field
-    %span.checkbox
-      = check_box "user", "admin"
-      %label{:for=> "user_admin"} Administrator
-    - if Radiant::Version.to_s >= "0.9"  
+- if @user.respond_to?(:designer)
+  %p
+    %label.multi_option Roles
+    = check_box "user", "admin", :class => "checkbox"
+    %label{:for=> :user_admin, :class => "checkbox"} Administrator
+    = check_box "user", "designer", :class => "checkbox"
+    %label{:for=> :user_designer, :class => "checkbox"} Designer
+    = check_box "user", "publisher", :class => "checkbox"
+    %label{:for=> :user_publisher, :class => "checkbox"} Publisher    
+- elsif @user.respond_to?(:developer)
+  %tr
+    %th.label
+      %label{:for=>"user_admin"} Roles
+    %td.field
       %span.checkbox
-        = check_box "user", "designer"
-        %label{:for=> "user_designer"} Designer
-    - else
+        = check_box "user", "admin"
+        %label{:for=> "user_admin"} Administrator
       %span.checkbox
         = check_box "user", "developer"
         %label{:for=> "user_developer"} Developer
-    %span.checkbox
-      = check_box "user", "publisher"
-      %label{:for=>"user_publisher"} Publisher
-  %td.help
-    Roles restrict user privileges and turn parts of the administrative interface on or off.
+      %span.checkbox
+        = check_box "user", "publisher"
+        %label{:for=>"user_publisher"} Publisher
+    %td.help
+      Roles restrict user privileges and turn parts of the administrative interface on or off.
+
