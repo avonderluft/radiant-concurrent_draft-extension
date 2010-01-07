@@ -139,9 +139,16 @@ admin_controllers.each do |controller|
         before :each do
           @klass.stub!(:find_by_id).and_return(@object)
           controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
+          # Accomodate PageGroupPermissions extension
+          if defined?(PageGroupPermissionsExtension) && @object.is_a?(Page)
+            @object.stub!(:group_owners).and_return([:publisher])
+            request.env["HTTP_REFERER"] = "/"
+            @object.should_receive(:group_owners)
+            @object.should_receive(:parent)
+          end
         end
 
-        it "should promote the draft when the 'Save and Promote Now' button was pushed" do
+        it "should promote the draft when the 'Save and Promote Now' button was pushed" do        
           @object.should_receive(:promote_draft!)
           do_post(:commit => @klass.promote_now_text)
           post(:edit, :id => '1', :promote => "Save and Promote Now")
