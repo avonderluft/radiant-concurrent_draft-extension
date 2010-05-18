@@ -22,7 +22,8 @@ Draft.RevertLink = Behavior.create({
     this.popup.show();
   },
   copyData: function(input){
-    var draft_id = input.name.gsub(/content/, 'draft_content').gsub(/[\[\]]+/, '_').sub(/\_*$/, '');
+    // var draft_id = input.name.gsub(/content/, 'draft_content').gsub(/[\[\]]+/, '_').sub(/\_*$/, '');
+    var draft_id = input.id.gsub(/content/, 'draft_content');
     var draft = $(draft_id);
     // The following was modified to accommodate templates
     if(draft){
