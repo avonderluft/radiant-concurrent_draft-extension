@@ -22,10 +22,11 @@ Draft.RevertLink = Behavior.create({
     this.popup.show();
   },
   copyData: function(input){
-    var draft_id = input.name.gsub(/content/, 'draft_content').gsub(/[\[\]]+/, '_').sub(/\_*$/, '');
+    // var draft_id = input.name.gsub(/content/, 'draft_content').gsub(/[\[\]]+/, '_').sub(/\_*$/, '');
+    var draft_id = input.id.gsub(/content/, 'draft_content');
     var draft = $(draft_id);
-    // The following was modified to accommodate templates
-    if(draft){
+    // The following was modified to accommodate templates extension
+    if (draft) {
       switch(draft.type){
         case 'checkbox':
           draft.checked = (input.value == draft.value);
@@ -35,6 +36,17 @@ Draft.RevertLink = Behavior.create({
           break;
       }
       draft.fire('draft:reverted');
+    } else {
+      // for true/false radio buttons in templates extension
+      var draft_true = document.getElementById(draft_id + '_true');
+      var draft_false = document.getElementById(draft_id + '_false');
+      if (draft_true && draft_false && draft_true.type == 'radio' && draft_false.type == 'radio') { 
+        if (input.value == 'true') {
+          draft_true.checked = true;
+        } else if (input.value == 'false') {
+          draft_false.checked = true;
+        }
+      }
     }
   }
 });
