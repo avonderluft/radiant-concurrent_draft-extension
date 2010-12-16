@@ -31,7 +31,7 @@ module ConcurrentDraft::AdminControllerExtensions
       model.promote_draft!
       flash[:notice] = "The existing draft #{model_class.to_s.downcase} has been promoted and is now live."
     when model_class.schedule_promotion_text
-      if model.update_attributes(params[model_symbol])
+      if model.update_attributes(params[model.class.name.underscore.intern])
         flash[:notice] = "The draft #{model_class.to_s.downcase} will be promoted on #{model.draft_promotion_scheduled_at.to_s(:long_civilian)}."
       else
         flash[:error] = model.errors.full_messages.to_sentence
