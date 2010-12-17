@@ -6,21 +6,23 @@ shared_examples_for 'controller with scheduled draft promotion' do
   before :each do
     create_user "Publisher", :publisher => true
     controller.cache.clear
-    login_as :admin
     @klass = controller.class.model_class
     @model_symbol = @klass.name.symbolize
     @object = mock_model(controller.class.model_class, :promote_draft! => nil, :save => true, :url => '')
     @object.errors.stub!(:full_messages).and_return([])
     @klass.stub!(:find).and_return(@object)
+    login_as :admin
   end
 
   describe "common actions" do
+
     def do_post(options={})
       post(:schedule_draft_promotion, {:id => '1', :commit => @klass.promote_now_text}.merge(options))
     end
 
     it "should load the model" do
       @klass.should_receive(:find).with('1').and_return(@object)
+      login_as :admin
       do_post
       assigns[@model_symbol].should == @object
     end
@@ -32,15 +34,18 @@ shared_examples_for 'controller with scheduled draft promotion' do
     end
 
     [:admin, :publisher].each do |user|
-      before :each do
-        request.session[:user_id] = user_id(user)
-      end
+      describe "#{user} user" do
+        before :each do
+          login_as user
+          #request.session[:user_id] = user_id(user)
+        end
       
-      it "should allow #{user}" do
-        do_post
-        response.should be_redirect
-        response.should redirect_to(:action => "edit")
-        flash[:error].should be_blank
+        it "should allow #{user}" do
+          do_post
+          response.should be_redirect
+          response.should redirect_to(:action => "edit")
+          flash[:error].should be_blank
+        end
       end
     end
     
@@ -59,6 +64,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
   end
 
   describe "promoting/publishing now" do
+
     def do_post
       post :schedule_draft_promotion, :id => '1', :commit => @klass.promote_now_text
     end
@@ -112,8 +118,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
   describe "cancelling promotion" do
     def do_post
-      post :schedule_draft_promotion, :id => '1',
-                                      :commit => Page.cancel_promotion_text
+      post :schedule_draft_promotion, :id => '1', :commit => @klass.cancel_promotion_text
     end
 
     before :each do
@@ -133,18 +138,21 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
   describe "promotion in conjunction with saving" do
     before :each do
+      controller.class.skip_before_filter :filter_chain
       @klass.stub!(:find_by_id).and_return(@object)
-      # controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
+      controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
     end
     
     it "should promote the draft when the 'Save & Promote Now' button was pushed" do
-      @object.should_receive(:promote_draft!)
-      post :edit, :id => 1, :promote => 'Save & Promote Now'
+      @object.should_receive(:promote_draft!).once
+      @object.should_receive(:update_attributes!).once
+      put :update, :id => 1, :promote => 'Save & Promote Now'
     end
     
     it "should not promote the draft when the 'Save & Promote Now' button was not pushed" do
       @object.should_not_receive(:promote_draft!)
-      post :edit, :id => 1
+      @object.should_receive(:update_attributes!).once
+      put :update, :id => 1
     end
   end
   
