@@ -13,6 +13,7 @@ describe Page, "with concurrent draft" do
   describe "when promoting" do
   
     it "should promote its page parts" do
+      @page.parts.should_receive(:reload).and_return(@page.parts)
       @page.parts.each {|part| part.should_receive(:promote_draft!) }
       @page.promote_draft!
     end

@@ -7,7 +7,7 @@ module ConcurrentDraft::PageExtensions
   end
   
   def promote_draft!
-    parts.each(&:promote_draft!)
+    parts.reload.each(&:promote_draft!)
     update_attribute('status_id', Status[:published].id)
     super
   end
