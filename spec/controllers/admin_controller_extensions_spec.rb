@@ -143,16 +143,25 @@ shared_examples_for 'controller with scheduled draft promotion' do
       controller.stub!(:handle_new_or_edit_post_without_promotion).and_return(false)
     end
     
+    def redirects_to_index
+      response.should be_redirect
+      response.should redirect_to(:action => :index)
+    end
+
     it "should promote the draft when the 'Save & Promote Now' button was pushed" do
       @object.should_receive(:promote_draft!).once
       @object.should_receive(:update_attributes!).once
+      @object.should_receive(:index).once
       put :update, :id => 1, :promote => 'Save & Promote Now'
+      redirects_to_index
     end
     
     it "should not promote the draft when the 'Save & Promote Now' button was not pushed" do
       @object.should_not_receive(:promote_draft!)
       @object.should_receive(:update_attributes!).once
+      @object.should_receive(:index).once
       put :update, :id => 1
+      redirects_to_index
     end
   end
   
