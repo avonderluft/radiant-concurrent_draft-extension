@@ -5,7 +5,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
   before :each do
     create_user "Publisher", :publisher => true
-    controller.cache.clear
+    # controller.cache.clear
     @klass = controller.class.model_class
     @model_symbol = @klass.name.symbolize
     @object = mock_model(controller.class.model_class, :promote_draft! => nil, :save => true, :url => '')
@@ -49,7 +49,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
       end
     end
     
-    [:developer, :existing].each do |user|
+    [:designer, :existing].each do |user|
       before :each do
         login_as user
       end

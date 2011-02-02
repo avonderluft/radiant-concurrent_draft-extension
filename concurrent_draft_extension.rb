@@ -6,19 +6,9 @@ rescue MissingSourceFile
 end
 
 class ConcurrentDraftExtension < Radiant::Extension
-  version "0.8.0"
+  version "0.9"
   description "Enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production"
   url "http://github.com/avonderluft/concurrent_draft/tree/master"
-
-  define_routes do |map|
-    map.page_schedule_draft_promotion 'admin/pages/schedule_draft_promotion/:id',
-      :controller => 'admin/pages', :action => 'schedule_draft_promotion'
-    map.snippet_schedule_draft_promotion 'admin/snippet/schedule_draft_promotion/:id',
-      :controller => 'admin/snippets', :action => 'schedule_draft_promotion'
-    map.layout_schedule_draft_promotion 'admin/layout/schedule_draft_promotion/:id',
-      :controller => 'admin/layouts', :action => 'schedule_draft_promotion'
-    map.page_unpublish 'admin/pages/unpublish/:id', :controller => 'admin/pages', :action => 'unpublish'
-  end
 
   def activate
     [Page, Snippet, Layout, PagePart].each do |klass|
