@@ -4,6 +4,13 @@ module ConcurrentDraft::ModelExtensions
     base.extend ClassMethods
     base.class_eval do
       validate :promotion_date_in_future
+      if instance_methods.include?('after_initialize')
+        alias_method_chain :after_initialize, :drafts
+      else
+        def after_initialize
+          promote_on_load
+        end
+      end
     end
   end
 
@@ -19,8 +26,13 @@ module ConcurrentDraft::ModelExtensions
     end
   end
 
-  def after_initialize
+  def promote_on_load
     promote_draft! if respond_to?(:draft_promotion_scheduled_at) && draft_should_be_promoted?
+  end
+
+  def after_initialize_with_drafts
+    promote_on_load
+    after_initialize_without_drafts
   end
 
   def has_draft_promotion_scheduled?
