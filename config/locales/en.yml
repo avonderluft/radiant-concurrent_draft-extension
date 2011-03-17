@@ -5,5 +5,7 @@ en:
   promote_now: "Promote now"
   revert_draft: "Revert draft"
   schedule: "Schedule"
+  scheduled: "Scheduled"
   schedule_promotion: "Schedule promotion"
   unpublish: "Unpublish"
+  unpublished: "Unpublished"

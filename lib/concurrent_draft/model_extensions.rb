@@ -19,6 +19,14 @@ module ConcurrentDraft::ModelExtensions
     def schedule_promotion_text; "Schedule for promotion on -->" end
     def cancel_promotion_text; "Cancel scheduled promotion" end
   end
+  
+  def display_name
+    if self.class.to_s == 'Page'
+      self.title
+    else
+      self.name
+    end
+  end
 
   def promotion_date_in_future
     if respond_to?(:draft_promotion_scheduled_at) && !draft_promotion_scheduled_at.blank? && draft_promotion_scheduled_at < Time.now
