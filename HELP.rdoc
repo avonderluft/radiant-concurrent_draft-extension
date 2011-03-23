@@ -1,0 +1,32 @@
+The <b>ConcurrentDraft</b> extension enables draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.  Every such artifact (page, snippet or layout) can have a concurrent draft version, which will be displayed in development mode, and a promoted live version, which will be displayed in production mode.  The admin edit page for each artifact will show the draft version.  
+
+== Usage
+
+* At the upper right-hand corner of each edit screen (Page, Layout, Snippet), you will find: 
+
+<b>Draft Controls ></b> <em>current status</em>
+
+* To the right of the  label is a link which will show the current status, e.g. 'Unpublished', 'Draft promotion unscheduled', or 'Scheduled 03/21/11 01:00PM'.
+* Clicking on the status link will display a dropdown of currently available functions.
+
+== Functions
+
+=== Promote Now
+
+This promotes the saved draft version of your artifact to production immediately.  Remember that you must save your artifact first.
+
+=== Schedule Promotion
+
+This spawns a popup window which enables you set the promotion date and time of your artifact. Upon completion, the status link will show 'Scheduled ...' with the date and time.  When the page is accessed on or after that time, the draft will be promoted.
+
+=== Cancel Promotion
+
+This cancels a scheduled promotion, and returns the artifact to its previous status.
+
+=== Unpublish
+
+This takes a published page and changes it back to 'Draft' status.  It will still appear in development mode, but not in production mode until it is published again.
+
+=== Revert Draft
+
+This will overlay the current draft with the promoted production version.  This is a safety feature which enables you to 'start over' if you have worked on some draft changes and want to go back to square one.
