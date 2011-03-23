@@ -1,5 +1,5 @@
 - include_javascript 'admin/concurrent_draft'
-- resource = @controller.model.display_name + ' ' +  @controller.model_class.to_s.downcase
+- resource = "#{@controller.model.display_name}  #{@controller.model_class.to_s.downcase}"
 
 .draft_controls
   %table.index
