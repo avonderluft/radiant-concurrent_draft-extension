@@ -21,10 +21,12 @@ module ConcurrentDraft::ModelExtensions
   end
   
   def display_name
-    if self.class.to_s == 'Page'
+    if self.respond_to?(:title)
       self.title
-    else
+    elsif self.respond_to?(:name)
       self.name
+    else
+      'resource'
     end
   end
 
