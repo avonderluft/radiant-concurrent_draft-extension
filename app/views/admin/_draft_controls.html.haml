@@ -1,33 +1,34 @@
 - include_javascript 'admin/concurrent_draft'
 - resource = "#{@controller.model.display_name}  #{@controller.model_class.to_s.downcase}"
 
-.draft_controls
-  %table.index
-    %tr
-      %td.label Draft Controls > 
-      %td.actions
-        - if @controller.model.has_draft_promotion_scheduled?
-          = link_to t('scheduled') + ' ' + @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p'), "#draft_options", :class => "action dropdown"
-        - elsif @controller.model.publishable? && ! @controller.model.published?
-          %em= link_to t('unpublished'), "#draft_options", :class => "action dropdown"
-        - else
-          %em= link_to t('draft_promotion_unscheduled'), "#draft_options", :class => "action dropdown"
-        %ul.menu{:id => "draft_options"}
-          - if @controller.authorized_user?
-            %li.schedule_draft= link_to image('clock') + ' ' + t('schedule_promotion'), '#schedule-draft-popup', :class => 'popup'
-            %li.publish
-              - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :html => {:method => :post} do |f|
-                = link_to_function image('tick') + ' ' + t('promote_now'), "$(this).up('form').submit();showStatus('Promoting #{resource}', true)"
-            - if @controller.model.has_draft_promotion_scheduled?
-              %li.cancel
-                - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.cancel_promotion_text}, :html => {:method => :post} do |f|
-                  = link_to_function image('cancel') + ' ' + t('cancel_promotion'), "$(this).up('form').submit();showStatus('Canceling scheduled promotion of #{resource}', true)"
-            - if @controller.model.publishable? && @controller.model.published?
-              %li.unpublish
-                - form_for @controller.model, :url => {:action => 'unpublish', :method => :post} do |f|
-                  = link_to_function image('page_delete') + ' ' + t('unpublish'), "$(this).up('form').submit();showStatus('Unpublishing #{resource}', true)"
-            - if @controller.model.has_draft_promoted?
-              %li.revert= link_to image('page_refresh') + ' ' + t('revert_draft'), '#revert-draft-popup', :class => 'popup'
+- unless @controller.model.id == nil  ## resource has not been saved.
+  .draft_controls
+    %table.index
+      %tr
+        %td.label Draft Controls >
+        %td.actions
+          - if @controller.model.has_draft_promotion_scheduled?
+            = link_to t('scheduled') + ' ' + @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p'), "#draft_options", :class => "action dropdown"
+          - elsif @controller.model.publishable? && ! @controller.model.published?
+            %em= link_to t('unpublished'), "#draft_options", :class => "action dropdown"
+          - else
+            %em= link_to t('draft_promotion_unscheduled'), "#draft_options", :class => "action dropdown"
+          %ul.menu{:id => "draft_options"}
+            - if @controller.authorized_user?
+              %li.schedule_draft= link_to image('clock') + ' ' + t('schedule_promotion'), '#schedule-draft-popup', :class => 'popup'
+              %li.publish
+                - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :html => {:method => :post} do |f|
+                  = link_to_function image('tick') + ' ' + t('promote_now'), "$(this).up('form').submit();showStatus('Promoting #{resource}', true)"
+              - if @controller.model.has_draft_promotion_scheduled?
+                %li.cancel
+                  - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.cancel_promotion_text}, :html => {:method => :post} do |f|
+                    = link_to_function image('cancel') + ' ' + t('cancel_promotion'), "$(this).up('form').submit();showStatus('Canceling scheduled promotion of #{resource}', true)"
+              - if @controller.model.publishable? && @controller.model.published?
+                %li.unpublish
+                  - form_for @controller.model, :url => {:action => 'unpublish', :method => :post} do |f|
+                    = link_to_function image('page_delete') + ' ' + t('unpublish'), "$(this).up('form').submit();showStatus('Unpublishing #{resource}', true)"
+              - if @controller.model.has_draft_promoted?
+                %li.revert= link_to image('page_refresh') + ' ' + t('revert_draft'), '#revert-draft-popup', :class => 'popup'
 
 - content_for :popups do
   - if @controller.authorized_user?
