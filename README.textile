@@ -1,11 +1,12 @@
 h2. Concurrent Draft
 
-The _ConcurrentDraft_ extension enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.  Every page, snippet and layout hence can have a concurrent draft (dev) and production version.
+The *ConcurrentDraft* extension enables draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production.  Every such artifact (page, snippet or layout) can have a concurrent draft version, which will be displayed in development mode, and a promoted live version, which will be displayed in production mode.
 
 Created by: Andrew vonderLuft and Sean Cribbs, August 2008, in Portland Oregon
 
 h3. Version History
 
+* 1.0.0 - Compatible with Blade UI - 0.9 and above
 * 0.8.0 - Compatible with Radiant 0.8.0 and above
 * 0.7.1 - Compatible with Radiant 0.7.1
 
@@ -15,17 +16,27 @@ h3. Requirements
 
 h3. Installation
 
-With the Radiant Extensions registry:
+h4. With the Radiant Extensions registry:
 
-From your Radiant root run:
+* From your Radiant root run:
 
-$ script/extension install concurrent_draft
+<pre>script/extension install concurrent_draft
+rake radiant:extensions:concurrent_draft:migrate
+rake radiant:extensions:concurrent_draft:update  
+</pre>
 
-Restart your radiant app, and you should be good to go.
+* Restart your radiant app, and you should be good to go.
 
-h3. To do
+h4. Using the gem
 
-* With upgrade to Radiant 0.7 some specs are not running correctly.
+* Install the gem
+
+<pre>gem install radiant-concurrent_draft-extension</pre>
+
+* Update your Radiant config:  add to environment.rb with other gem.configs
+
+<pre>config.gem 'radiant-concurrent_draft-extension', :lib => false</pre>
+
 
 h3. Caveats
 
@@ -37,4 +48,5 @@ h3. Acknowledgments
 
 * Andrew conceived of the ideas for this extension and its initial design,  and did model changes, migrations, and initial code for pages.
 * Sean collaborated on its expansion and refactoring to include snippets and layouts, and produced most of the final code, including all of the UI.
-* After some discussion, they both rightly identified the mystery piece as a Haydn Cello concerto.
+* Andrew refactored the UI for Radiant 0.9 and higher, added i18n, and gemified the extension.
+* After some discussion, they rightly identified the mystery piece as a Haydn Cello concerto.

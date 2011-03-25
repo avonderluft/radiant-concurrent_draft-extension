@@ -1,14 +1,10 @@
 # Uncomment this if you reference any of your controllers in activate
-begin
-  require_dependency 'application_controller'
-rescue MissingSourceFile
-  require_dependency 'application'
-end
+require_dependency 'application_controller'
 
 class ConcurrentDraftExtension < Radiant::Extension
-  version "0.9"
+  version "#{File.read(File.expand_path(File.dirname(__FILE__)) + '/VERSION')}"
   description "Enables default draft versions of pages, snippets and layouts, which can be scheduled for promotion to Production"
-  url "http://github.com/avonderluft/concurrent_draft/tree/master"
+  url "https://github.com/avonderluft/radiant-concurrent_draft-extension/tree/master"
 
   def activate
     [Page, Snippet, Layout, PagePart].each do |klass|

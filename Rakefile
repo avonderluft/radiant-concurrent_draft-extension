@@ -1,3 +1,19 @@
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "radiant-concurrent_draft-extension"
+    gem.summary = %Q{Concurrent Draft Extension for Radiant CMS}
+    gem.description = %Q{Enables draft versions of pages, snippets and layouts, which can be scheduled for promotion.}
+    gem.email = "avonderluft@avlux.net"
+    gem.homepage = "https://github.com/avonderluft/radiant-concurrent_draft-extension"
+    gem.authors = ['Andrew vonderLuft','Sean Cribbs']
+    gem.add_dependency 'radiant', ">=0.9.1"
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  end
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. This is only required if you plan to package concurrent_draft as a gem."
+end
+
 # I think this is the one that should be moved to the extension Rakefile template
 
 # In rails 1.2, plugins aren't available in the path until they're loaded.
