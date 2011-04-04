@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-concurrent_draft-extension}
-  s.version = "1.0.1"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew vonderLuft", "Sean Cribbs"]
-  s.date = %q{2011-03-28}
+  s.date = %q{2011-04-04}
   s.description = %q{Enables draft versions of pages, snippets and layouts, which can be scheduled for promotion.}
   s.email = %q{avonderluft@avlux.net}
   s.extra_rdoc_files = [
@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
     "lib/concurrent_draft/site_controller_extensions.rb",
     "lib/concurrent_draft/tags.rb",
     "lib/tasks/concurrent_draft_extension_tasks.rake",
-    "pkg/radiant-concurrent_draft-extension-1.0.0.gem",
+    "pkg/radiant-concurrent_draft-extension-1.0.1.gem",
     "public/images/admin/cancel.png",
     "public/images/admin/clock.png",
     "public/images/admin/page_delete.png",
@@ -60,9 +60,6 @@ Gem::Specification.new do |s|
     "spec/models/tags_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb",
-    "test/helpers/caching_test_helper.rb",
-    "test/helpers/page_part_test_helper.rb",
-    "test/helpers/page_test_helper.rb",
     "vendor/plugins/12_hour_time/CHANGELOG",
     "vendor/plugins/12_hour_time/README",
     "vendor/plugins/12_hour_time/Rakefile",
@@ -73,7 +70,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{https://github.com/avonderluft/radiant-concurrent_draft-extension}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
+  s.rubygems_version = %q{1.6.2}
   s.summary = %q{Concurrent Draft Extension for Radiant CMS}
   s.test_files = [
     "spec/controllers/admin_controller_extensions_spec.rb",
@@ -82,10 +79,7 @@ Gem::Specification.new do |s|
     "spec/models/model_extensions_spec.rb",
     "spec/models/page_extensions_spec.rb",
     "spec/models/tags_spec.rb",
-    "spec/spec_helper.rb",
-    "test/helpers/caching_test_helper.rb",
-    "test/helpers/page_part_test_helper.rb",
-    "test/helpers/page_test_helper.rb"
+    "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
