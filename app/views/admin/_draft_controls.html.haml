@@ -33,7 +33,7 @@
 - content_for :popups do
   - if @controller.authorized_user?
     .popup#schedule-draft-popup{:style => 'display:none'}
-      %h3.title
+      .popup_title
         = image('clock')
         = t('schedule_promotion')
       - form_for @controller.model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post, 'data-onsubmit_status' => "Scheduling promotion of #{resource}"} do |f|
@@ -61,7 +61,7 @@
       width: 300px
       background: #7E7E7E
       table.index
-        margin: 0
+        margin: -2px 0 0 0
         border: none
         tr, td.label, td.actions
           border: none
