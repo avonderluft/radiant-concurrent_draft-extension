@@ -7,7 +7,7 @@ begin
     gem.email = "avonderluft@avlux.net"
     gem.homepage = "https://github.com/avonderluft/radiant-concurrent_draft-extension"
     gem.authors = ['Andrew vonderLuft','Sean Cribbs']
-    gem.add_dependency 'radiant', ">=0.9.1"
+    gem.add_dependency 'radiant', ">=1.0.0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
