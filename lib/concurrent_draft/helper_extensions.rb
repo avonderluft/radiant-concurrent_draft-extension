@@ -32,8 +32,8 @@ module ConcurrentDraft::HelperExtensions
   #   submit_tag label, :name => 'continue', :class => 'button' 
   # end
   # 
-  # def save_model_and_promote_button(_model)
-  #   label = _model.new_record? ? "Create" : "Save"
-  #   submit_tag "#{label} and Promote Now", :name => 'promote', :class => 'button'
-  # end
+  def save_model_and_promote_button(_model)
+    label = _model.new_record? ? "Create" : "Save"
+    submit_tag "#{label} and Promote Now", :name => 'promote', :class => 'button'
+  end
 end

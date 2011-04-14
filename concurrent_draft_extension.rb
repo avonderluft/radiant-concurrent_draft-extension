@@ -21,8 +21,8 @@ class ConcurrentDraftExtension < Radiant::Extension
     SiteController.send :include, ConcurrentDraft::SiteControllerExtensions
     %w{page snippet layout}.each do |view|
       admin.send(view).edit.add :main, "admin/draft_controls", :before => "edit_header"
-      # admin.send(view).edit.form_bottom.delete 'edit_buttons'
-      # admin.send(view).edit.add :form_bottom, 'admin/edit_buttons'
+      admin.send(view).edit.form_bottom.delete 'edit_buttons'
+      admin.send(view).edit.add :form_bottom, 'admin/edit_buttons'
     end
     # admin.page.edit.add :extended_metadata, 'published_meta'
     Time::DATE_FORMATS[:long_civilian] = lambda {|time| time.strftime("%B %d, %Y %I:%M%p").gsub(/(\s+)0(\d+)/, '\1\2') }

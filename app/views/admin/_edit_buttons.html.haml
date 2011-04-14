@@ -1,10 +1,21 @@
 - if @controller.model.is_a?(Page)
   - @buttons_partials.each do |partial|
-    = render :partial => partial
-%p.buttons
-  = save_model_and_continue_editing_button(@controller.model)
+    = render :partial => partial, :locals => {:f => fields}
+%p.buttons{:style=>"clear: left"}
   = save_model_button(@controller.model)
+  = save_model_and_continue_editing_button(@controller.model)
   - if @controller.authorized_user?
     = save_model_and_promote_button(@controller.model)
-  or
+  - if @controller.model.is_a?(Page)
+    = submit_tag(t('preview', :default => 'Preview'), :class => 'button', :id => 'show-preview')
+  = t('or')
   = link_to t('cancel'), :action => 'index'
+  - if @controller.model.is_a?(Page)
+    #preview_panel.fullcover.grey_out{:style => 'display: none;'}
+      %iframe{:id => 'page-preview', :class => 'fullcover', :name => 'page-preview', :src => '/loading-iframe.html', :frameborder => 0, :scrolling => "auto"}
+      .preview_tools
+        =submit_tag(t('buttons.save_changes'), :class => 'big save_changes')
+        =submit_tag(t('buttons.save_and_continue'), :class => 'big save_and_continue', :name => 'continue')
+        %span.info
+          = t('or')
+          =link_to(t('edit_page'),{}, :class => 'cancel')
