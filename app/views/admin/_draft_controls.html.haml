@@ -8,50 +8,50 @@
         %td.label Draft Controls >
         %td.actions
           - if @controller.model.has_draft_promotion_scheduled?
-            = link_to t('scheduled') + ' ' + @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p'), "#draft_options", :class => "action dropdown"
+            = link_to t('concurrent_draft.scheduled') + ' ' + @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p'), "#draft_options", :class => "action dropdown"
           - elsif @controller.model.publishable? && ! @controller.model.published?
-            %em= link_to t('unpublished'), "#draft_options", :class => "action dropdown"
+            %em= link_to t('concurrent_draft.unpublished'), "#draft_options", :class => "action dropdown"
           - else
-            %em= link_to t('draft_promotion_unscheduled'), "#draft_options", :class => "action dropdown"
+            %em= link_to t('concurrent_draft.draft_promotion_unscheduled'), "#draft_options", :class => "action dropdown"
           %ul.menu{:id => "draft_options"}
             - if @controller.authorized_user?
-              %li.schedule_draft= link_to image('clock') + ' ' + t('schedule_promotion'), '#schedule-draft-popup', :class => 'popup'
+              %li.schedule_draft= link_to image('clock') + ' ' + t('concurrent_draft.schedule_promotion'), '#schedule-draft-popup', :class => 'popup'
               %li.publish
                 - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :html => {:method => :post} do |f|
-                  = link_to_function image('tick') + ' ' + t('promote_now'), "$(this).up('form').submit();showStatus('Promoting #{resource}', true)"
+                  = link_to_function image('tick') + ' ' + t('concurrent_draft.promote_now'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.promoting', :resource => resource) + "', true)"
               - if @controller.model.has_draft_promotion_scheduled?
                 %li.cancel
                   - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.cancel_promotion_text}, :html => {:method => :post} do |f|
-                    = link_to_function image('cancel') + ' ' + t('cancel_promotion'), "$(this).up('form').submit();showStatus('Canceling scheduled promotion of #{resource}', true)"
+                    = link_to_function image('cancel') + ' ' + t('concurrent_draft.cancel_promotion'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.canceling', :resource => resource) + "', true)"
               - if @controller.model.publishable? && @controller.model.published?
                 %li.unpublish
                   - form_for @controller.model, :url => {:action => 'unpublish', :method => :post} do |f|
-                    = link_to_function image('page_delete') + ' ' + t('unpublish'), "$(this).up('form').submit();showStatus('Unpublishing #{resource}', true)"
+                    = link_to_function image('page_delete') + ' ' + t('concurrent_draft.unpublish'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.unpublishing', :resource => resource) + "', true)"
               - if @controller.model.has_draft_promoted?
-                %li.revert= link_to image('page_refresh') + ' ' + t('revert_draft'), '#revert-draft-popup', :class => 'popup'
+                %li.revert= link_to image('page_refresh') + ' ' + t('concurrent_draft.revert_draft'), '#revert-draft-popup', :class => 'popup'
 
 - content_for :popups do
   - if @controller.authorized_user?
     .popup#schedule-draft-popup{:style => 'display:none'}
       .popup_title
         = image('clock')
-        = t('schedule_promotion')
-      - form_for @controller.model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post, 'data-onsubmit_status' => "Scheduling promotion of #{resource}"} do |f|
+        = t('concurrent_draft.schedule_promotion')
+      - form_for @controller.model, :url => {:action => 'schedule_draft_promotion'}, :html => {:method => :post, 'data-onsubmit_status' => t('concurrent_draft.scheduling', :resource => resource)} do |f|
         %div
           = f.datetime_select :draft_promotion_scheduled_at, :start_year => Date.today.year, :minute_step => 15, :twelve_hour => true
           = hidden_field_tag :commit, @controller.model_class.schedule_promotion_text
         %p{:style => 'text-align: right'}
-          %button{:type => 'submit'}= t('schedule')
+          %button{:type => 'submit'}= t('concurrent_draft.schedule')
           = t('or')
           = link_to_function t('cancel'), "$(this).closePopup();"
 
   .popup#revert-draft-popup{:style => 'display:none'}
     %p.revert
       = image('page_refresh')
-      The draft has been replaced with the live content.  
+      = t('concurrent_draft.revert_draft_message')
       %br/
       %br/
-      %em You must save the page for this to take effect.
+      %em= t('concurrent_draft.revert_draft_save_msg')
       %span{:style => 'padding-left:8px'}= link_to_function 'OK', "$(this).closePopup();"
 
 - content_for :page_css do
