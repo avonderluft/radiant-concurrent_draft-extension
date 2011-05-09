@@ -7,7 +7,7 @@ describe SiteController, "(Extended) - concurrent draft changes" do
   
   before :each do
     @page = mock_model(Page, :published? => false, :draft_should_be_promoted? => true, :process => nil, :update_attribute => nil)
-    Page.stub!(:find_by_url).and_return(@page)
+    Page.stub!(:find_by_path).and_return(@page)
   end
 
   it "should include the extension module" do
@@ -24,7 +24,7 @@ describe SiteController, "(Extended) - concurrent draft changes" do
   end
 
   it "should set the status to published if the draft should be promoted" do
-    Page.should_receive(:find_by_url).at_least(:once).and_return(@page)
+    Page.should_receive(:find_by_path).at_least(:once).and_return(@page)
     @page.should_receive(:update_attribute).with('status_id', Status[:published].id)
     get :show_page, :url => '/'
   end
