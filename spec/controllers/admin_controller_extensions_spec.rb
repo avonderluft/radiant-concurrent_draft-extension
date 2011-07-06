@@ -22,6 +22,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     it "should load the model" do
       @klass.should_receive(:find).with('1').and_return(@object)
+      @object.should_receive(:display_name)
       login_as :admin
       do_post
       assigns[@model_symbol].should == @object
@@ -41,9 +42,10 @@ shared_examples_for 'controller with scheduled draft promotion' do
         end
       
         it "should allow #{user}" do
+          @object.should_receive(:display_name)
           do_post
           response.should be_redirect
-          response.should redirect_to(:action => "edit")
+          response.should redirect_to(:action => "index")
           flash[:error].should be_blank
         end
       end
@@ -71,10 +73,12 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     it "should promote the draft" do
       @object.should_receive(:promote_draft!)
+      @object.should_receive(:display_name)
       do_post
     end
 
     it "should set the flash message" do
+      @object.should_receive(:display_name)
       do_post
       flash[:notice].should match(/published|promoted/)
     end
@@ -105,6 +109,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
     it "should set the flash notice message when the scheduled time is valid" do
       @object.should_receive(:update_attributes).with(@post_attrs).and_return(true)
+      @object.should_receive(:display_name)
       do_post
       flash[:notice].should match(/will be promoted/)
     end
@@ -118,6 +123,7 @@ shared_examples_for 'controller with scheduled draft promotion' do
 
   describe "cancelling promotion" do
     def do_post
+      @object.should_receive(:display_name)
       post :schedule_draft_promotion, :id => '1', :commit => @klass.cancel_promotion_text
     end
 

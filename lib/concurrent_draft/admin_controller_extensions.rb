@@ -29,24 +29,24 @@ module ConcurrentDraft::AdminControllerExtensions
     case params[:commit]
     when model_class.promote_now_text
       model.promote_draft!
-      flash[:notice] = "The existing draft #{model_class.to_s.downcase} has been promoted and is now live."
+      flash[:notice] = "Draft #{model_class.to_s.downcase} '#{model.display_name}' has been promoted and is now live."
     when model_class.schedule_promotion_text
       if model.update_attributes(params[model.class.name.underscore.intern])
-        flash[:notice] = "The draft #{model_class.to_s.downcase} will be promoted on #{model.draft_promotion_scheduled_at.to_s(:long_civilian)}."
+        flash[:notice] = "Draft #{model_class.to_s.downcase} '#{model.display_name}' will be promoted on #{model.draft_promotion_scheduled_at.to_s(:long_civilian)}."
       else
         flash[:error] = model.errors.full_messages.to_sentence
       end
     when model_class.cancel_promotion_text
       model.cancel_promotion!
-      flash[:notice] = "The scheduled draft #{model_class.to_s.downcase} promotion has been cancelled."
+      flash[:notice] = "Scheduled draft promotion of #{model_class.to_s.downcase} '#{model.display_name}' has been cancelled."
     end
-    redirect_to :action => "edit"
+    redirect_to :action => "index"
   end
 
   def unpublish
     self.model = model_class.find(params[:id])
     model.unpublish!
-    flash[:notice] = "#{model_class} has been unpublished and reset to draft mode -- no draft promotion scheduled."
-    redirect_to :action => "edit"
+    flash[:notice] = "#{model_class} '#{model.display_name}' has been unpublished and reset to draft mode."
+    redirect_to :action => "index"
   end
 end

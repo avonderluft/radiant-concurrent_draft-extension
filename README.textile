@@ -55,6 +55,10 @@ Scheduled times are dependent on the ActiveRecord time setting.  If you want to 
 
 <pre>config.active_record.default_timezone = :local</pre>
 
+h2. To do
+
+* Add draft controls to Page Index view, probably in the Status column.
+
 h2. Acknowledgments
 
 * Andrew conceived of the ideas for this extension and its initial design,  and did model changes, migrations, and initial code for pages.
