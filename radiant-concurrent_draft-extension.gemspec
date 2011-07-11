@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{radiant-concurrent_draft-extension}
-  s.version = "1.0.6"
+  s.version = "1.0.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew vonderLuft", "Sean Cribbs"]
-  s.date = %q{2011-07-06}
+  s.date = %q{2011-07-11}
   s.description = %q{Enables draft versions of pages, snippets and layouts, which can be scheduled for promotion.}
   s.email = %q{avonderluft@avlux.net}
   s.extra_rdoc_files = [
