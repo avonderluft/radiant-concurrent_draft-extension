@@ -1,34 +1,33 @@
+- include_stylesheet 'admin/concurrent_draft'
 - include_javascript 'admin/concurrent_draft'
 - resource = "#{@controller.model.display_name}  #{@controller.model_class.to_s.downcase}"
 
 - unless @controller.model.id == nil  ## resource has not been saved.
-  .draft_controls
-    %table.index
-      %tr
-        %td.label Draft Controls >
-        %td.actions
+  #draft-controls-container
+    #draft-controls
+      .status
+        - if @controller.model.has_draft_promotion_scheduled?
+          = t('concurrent_draft.scheduled') + ' ' + @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p')
+        - elsif @controller.model.publishable? && ! @controller.model.published?
+          %em= t('concurrent_draft.unpublished')
+        - else
+          %em= t('concurrent_draft.draft_promotion_unscheduled')
+      %ul.dropdown{:id => "draft_options"}
+        - if @controller.authorized_user?
+          %li.schedule_draft= link_to t('concurrent_draft.schedule_promotion'), '#schedule-draft-popup', :class => 'popup'
+          %li.publish
+            - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :html => {:method => :post} do |f|
+              = link_to_function t('concurrent_draft.promote_now'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.promoting', :resource => resource) + "', true)"
           - if @controller.model.has_draft_promotion_scheduled?
-            = link_to t('concurrent_draft.scheduled') + ' ' + @controller.model.draft_promotion_scheduled_at.strftime('%m/%d/%y %I:%M%p'), "#draft_options", :class => "action dropdown"
-          - elsif @controller.model.publishable? && ! @controller.model.published?
-            %em= link_to t('concurrent_draft.unpublished'), "#draft_options", :class => "action dropdown"
-          - else
-            %em= link_to t('concurrent_draft.draft_promotion_unscheduled'), "#draft_options", :class => "action dropdown"
-          %ul.menu{:id => "draft_options"}
-            - if @controller.authorized_user?
-              %li.schedule_draft= link_to image('clock') + ' ' + t('concurrent_draft.schedule_promotion'), '#schedule-draft-popup', :class => 'popup'
-              %li.publish
-                - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.promote_now_text}, :html => {:method => :post} do |f|
-                  = link_to_function image('tick') + ' ' + t('concurrent_draft.promote_now'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.promoting', :resource => resource) + "', true)"
-              - if @controller.model.has_draft_promotion_scheduled?
-                %li.cancel
-                  - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.cancel_promotion_text}, :html => {:method => :post} do |f|
-                    = link_to_function image('cancel') + ' ' + t('concurrent_draft.cancel_promotion'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.canceling', :resource => resource) + "', true)"
-              - if @controller.model.publishable? && @controller.model.published?
-                %li.unpublish
-                  - form_for @controller.model, :url => {:action => 'unpublish', :method => :post} do |f|
-                    = link_to_function image('page_delete') + ' ' + t('concurrent_draft.unpublish'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.unpublishing', :resource => resource) + "', true)"
-              - if @controller.model.has_draft_promoted?
-                %li.revert= link_to image('page_refresh') + ' ' + t('concurrent_draft.revert_draft'), '#revert-draft-popup', :class => 'popup'
+            %li.cancel
+              - form_for @controller.model, :url => {:action => 'schedule_draft_promotion', :commit => @controller.model_class.cancel_promotion_text}, :html => {:method => :post} do |f|
+                = link_to_function t('concurrent_draft.cancel_promotion'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.canceling', :resource => resource) + "', true)"
+          - if @controller.model.publishable? && @controller.model.published?
+            %li.unpublish
+              - form_for @controller.model, :url => {:action => 'unpublish', :method => :post} do |f|
+                = link_to_function t('concurrent_draft.unpublish'), "$(this).up('form').submit();showStatus('" + t('concurrent_draft.unpublishing', :resource => resource) + "', true)"
+          - if @controller.model.has_draft_promoted?
+            %li.revert= link_to t('concurrent_draft.revert_draft'), '#revert-draft-popup', :class => 'popup'
 
 - content_for :popups do
   - if @controller.authorized_user?
@@ -53,34 +52,3 @@
       %br/
       %em= t('concurrent_draft.revert_draft_save_message')
       %span{:style => 'padding-left:8px'}= link_to_function 'OK', "$(this).closePopup();"
-
-- content_for :page_css do
-  :sass
-    .draft_controls
-      float: right
-      width: 300px
-      background: #7E7E7E
-      table.index
-        margin: -2px 0 0 0
-        border: none
-        tr, td.label, td.actions
-          border: none
-          padding: 0px
-          background: #7E7E7E
-        td.label
-          text-align: right
-          padding-right: 6px
-        td.actions
-          width: 178px
-          a.action, span.action.disabled
-            color: white
-            text-decoration: underline
-            margin: 0
-            &:hover
-              color: black
-              text-decoration: none
-              background: #eee image_url('admin/buttons_background.png') repeat-x
-            &.selected
-              color: black
-              text-decoration: none
-              background: #c5e0f5
