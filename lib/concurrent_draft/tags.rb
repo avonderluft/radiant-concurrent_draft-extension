@@ -3,9 +3,11 @@ module ConcurrentDraft::Tags
 
   def self.included(base)
     base.class_eval do
-      %w{content snippet}.each do |t|
-        alias_method "tag:old_#{t}", "tag:#{t}"
-        alias_method "tag:#{t}", "tag:concurrent_draft_#{t}"
+      alias_method "tag:old_content", "tag:content"
+      alias_method "tag:content", "tag:concurrent_draft_content"
+      if defined?(SnippetsExtension)
+        alias_method "tag:old_snippet", "tag:snippet"
+        alias_method "tag:snippet", "tag:concurrent_draft_snippet"
       end
     end
   end
@@ -35,22 +37,25 @@ module ConcurrentDraft::Tags
     tag.globals.page.render_snippet(part) unless part.nil?
   end
 
-  tag 'concurrent_draft_snippet' do |tag|
-    if name = tag.attr['name']
-      if snippet = Snippet.find_by_name(name.strip)
-        tag.locals.yield = tag.expand if tag.double?
-        ###      CONCURRENT DRAFTS CHANGE      ###
-        # Show the draft content on the dev site #
-        # Promote the snippet if it needs to be  #
-        snippet.promote_draft! if snippet.draft_should_be_promoted?
-        snippet.content = snippet.draft_content if dev?(tag.globals.page.request)
-        ###    END CONCURRENT DRAFTS CHANGE    ###
-        tag.globals.page.render_snippet(snippet)
+  if defined?(SnippetsExtension)
+    tag 'concurrent_draft_snippet' do |tag|
+      if name = tag.attr['name']
+        if snippet = Snippet.find_by_name(name.strip)
+          tag.locals.yield = tag.expand if tag.double?
+          ###      CONCURRENT DRAFTS CHANGE      ###
+          # Show the draft content on the dev site #
+          # Promote the snippet if it needs to be  #
+          snippet.promote_draft! if snippet.draft_should_be_promoted?
+          snippet.content = snippet.draft_content if dev?(tag.globals.page.request)
+          ###    END CONCURRENT DRAFTS CHANGE    ###
+          tag.globals.page.render_snippet(snippet)
+        else
+          raise StandardTags::TagError.new("snippet not found: #{name}")
+        end
       else
-        raise StandardTags::TagError.new("snippet not found: #{name}")
+        raise StandardTags::TagError.new("`snippet' tag must contain `name' attribute")
       end
-    else
-      raise StandardTags::TagError.new("`snippet' tag must contain `name' attribute")
     end
   end
+  
 end

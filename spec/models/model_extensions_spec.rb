@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+# require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 share_examples_for "model with concurrent draft" do
   it "should be invalid with a draft promotion schedule date in the past" do
@@ -60,16 +61,18 @@ share_examples_for "model with concurrent draft" do
   end
 end
 
-describe Snippet, "with concurrent draft" do
-  dataset :snippets
-  before :each do
-    @object = snippets(:first)
-    @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
+if defined?(SnippetsExtension)
+  describe Snippet, "with concurrent draft" do
+    dataset :snippets
+    before :each do
+      @object = snippets(:first)
+      @object.update_attributes(:content => 'content test', :draft_content => 'draft content')
+    end
+    it "should not be publishable" do
+      @object.publishable?.should_not be_true
+    end
+    it_should_behave_like 'model with concurrent draft'
   end
-  it "should not be publishable" do
-    @object.publishable?.should_not be_true
-  end
-  it_should_behave_like 'model with concurrent draft'
 end
 
 describe Layout, "with concurrent draft" do

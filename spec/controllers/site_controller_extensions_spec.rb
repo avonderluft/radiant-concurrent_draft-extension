@@ -1,4 +1,6 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+# require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
+
 require 'site_controller'
 SiteController.module_eval { def rescue_action(e); raise e; end }
 

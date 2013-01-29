@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+# require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 shared_examples_for 'controller with scheduled draft promotion' do
   dataset :users
@@ -181,8 +182,10 @@ describe Admin::PagesController, "with concurrent_draft functions" do
   it_should_behave_like 'controller with scheduled draft promotion'
 end
 
-describe Admin::SnippetsController, "with concurrent_draft functions" do
-  it_should_behave_like 'controller with scheduled draft promotion'
+if defined?(SnippetsExtension)
+  describe Admin::SnippetsController, "with concurrent_draft functions" do
+    it_should_behave_like 'controller with scheduled draft promotion'
+  end
 end
 
 describe Admin::LayoutsController, "with concurrent_draft functions" do

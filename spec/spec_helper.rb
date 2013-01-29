@@ -12,6 +12,7 @@ end
 require "#{RADIANT_ROOT}/spec/spec_helper"
 
 Dataset::Resolver.default << (File.dirname(__FILE__) + "/datasets")
+Dataset::Resolver.default << (SnippetsExtension.root + "/spec/datasets") if defined?(SnippetsExtension)
 if File.directory?(File.dirname(__FILE__) + "/scenarios")
   Scenario.load_paths.unshift File.dirname(__FILE__) + "/scenarios"
 end

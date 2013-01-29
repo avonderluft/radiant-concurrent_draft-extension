@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+# require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe Page, "with concurrent draft" do
   dataset :pages_with_layouts
