@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{radiant-concurrent_draft-extension}
-  s.version = "1.0.7"
+  s.name = "radiant-concurrent_draft-extension"
+  s.version = "1.0.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew vonderLuft", "Sean Cribbs"]
-  s.date = %q{2011-07-11}
-  s.description = %q{Enables draft versions of pages, snippets and layouts, which can be scheduled for promotion.}
-  s.email = %q{avonderluft@avlux.net}
+  s.date = "2013-01-29"
+  s.description = "Enables draft versions of pages, snippets and layouts, which can be scheduled for promotion."
+  s.email = "avonderluft@avlux.net"
   s.extra_rdoc_files = [
     "README.textile"
   ]
@@ -67,19 +67,10 @@ Gem::Specification.new do |s|
     "vendor/plugins/12_hour_time/test/12_hour_time_test.rb",
     "vendor/plugins/12_hour_time/test/test_helper.rb"
   ]
-  s.homepage = %q{https://github.com/avonderluft/radiant-concurrent_draft-extension}
+  s.homepage = "https://github.com/avonderluft/radiant-concurrent_draft-extension"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
-  s.summary = %q{Concurrent Draft Extension for Radiant CMS}
-  s.test_files = [
-    "spec/controllers/admin_controller_extensions_spec.rb",
-    "spec/controllers/site_controller_extensions_spec.rb",
-    "spec/matchers/concurrent_draft_matcher.rb",
-    "spec/models/model_extensions_spec.rb",
-    "spec/models/page_extensions_spec.rb",
-    "spec/models/tags_spec.rb",
-    "spec/spec_helper.rb"
-  ]
+  s.rubygems_version = "1.8.24"
+  s.summary = "Concurrent Draft Extension for Radiant CMS"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
