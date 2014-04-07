@@ -1,6 +1,6 @@
 - include_stylesheet 'admin/concurrent_draft'
 - include_javascript 'admin/concurrent_draft'
-- resource = CGI::escape("#{@controller.model.display_name.html_safe}  #{@controller.model_class.to_s.downcase}")
+- resource = CGI::escape("#{@controller.model.display_name}  #{@controller.model_class.to_s.downcase}")
 
 - unless @controller.model.id == nil  ## resource has not been saved.
   #draft-controls-container
